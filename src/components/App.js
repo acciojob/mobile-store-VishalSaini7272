@@ -1,24 +1,30 @@
-import React from "react";
+import React, { useState } from "react";
+import { BrowserRouter as Router, Routes, Route, Link } from "react-router-dom";
+import { Products } from "../constants/products";
+import ProductList from "./ProductList";
+import ProductDetails from "./ProductDetails";
+import AdminPanel from "./AdminPanel";
 import "./../styles/App.css";
-import { BrowserRouter, Route, Routes } from "react-router-dom";
-import Home from "./home";
-import Header from "./header";
-import Admin from "./admin";
-import Product from "./product";
-import AdminProdcut from "./adminProduct";
 
-const App = () => {
+function App() {
+  const [products, setProducts] = useState(Products);
+
   return (
-    <BrowserRouter>
-      <Header />
+    <Router>
+      <nav>
+        <Link to="/">Home</Link> | <Link to="/admin">Admin Panel</Link>
+      </nav>
+
       <Routes>
-        <Route path="/" element={<Home />} />
-        <Route path="/admin" element={<Admin />} />
-        <Route path="/products/:id" element={<Product />} />
-        <Route path="/admin/products/:id" element={<AdminProdcut />} />
+        <Route path="/" element={<ProductList products={products} />} />
+        <Route path="/products/:id" element={<ProductDetails products={products} />} />
+        <Route
+          path="/admin"
+          element={<AdminPanel products={products} setProducts={setProducts} />}
+        />
       </Routes>
-    </BrowserRouter>
+    </Router>
   );
-};
+}
 
 export default App;
